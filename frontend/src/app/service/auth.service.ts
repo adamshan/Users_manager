@@ -1,37 +1,61 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-
+import { UserService } from './user.service';
 import { User } from '../modeles/user.model';
+import { resolve } from 'url';
+import { reject } from 'q';
+import { HttpClient } from '@angular/common/http';
+//import { RequestOptions } from '@angular/http';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({
+  providedIn: 'root'
+})
+
+
 export class AuthService {
-    private currentUserSubject: BehaviorSubject<User>;
-    public currentUser: Observable<User>;
 
-    constructor(private http: HttpClient) {
-        this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));
-        this.currentUser = this.currentUserSubject.asObservable();
-    }
+  
+  //headers:Headers=new Headers();
+  options:any;
+  server='http://localhost:8000/user';
+  constructor( private http:HttpClient) 
+  
+  {
+    /*this.headers.append('enctype','multipart/form-data');;
+    this.headers.append('Content-type','application/json');
+    this.headers.append('X-Requested-With','XMLhttpRequest');
+    this.options=new RequestOptions({});
+   */}
 
-    public get currentUserValue(): User {
-        return this.currentUserSubject.value;
-    }
+  //sauvegarde de utilisateur connecté
+  
+  userAuth:User=new User('','' ,'','','',false);
+  //au debut, utilisateur n'est pas connecte
+    //boutton pour arreter la progession du spinner
+  showspinner=false;
 
-    login(username, password) {
-        return this.http.post<any>(`${config.apiUrl}/users/authenticate`, { username, password })
-            .pipe(map(user => {
-                // store user details and jwt token in local storage to keep user logged in between page refreshes
-                localStorage.setItem('currentUser', JSON.stringify(user));
-                this.currentUserSubject.next(user);
-                return user;
-            }));
-    }
+  //methode de connection
 
-    logout() {
-        // remove user from local storage and set current user to null
-        localStorage.removeItem('currentUser');
-        this.currentUserSubject.next(null);
+   SignIn(username:string,password:string){
+    
+  
+  this.http.get<User>(this.server+'/connection/'+username+'/'+password).subscribe(
+    (data)=>{
+      //recuperation de utilisateur
+      const user:User=data[0];
+      //verification s'il existe
+      if(user!=null){
+        user.isAuth=true;
+        this.userAuth=user;
+      }
+      else{
+        console.log("ces parametres sont deja utilise");
+      }
     }
+  )
 }
+//methode de deconnection
+isDisconnect(){
+  this.userAuth.isAuth=false;
+}
+}
+

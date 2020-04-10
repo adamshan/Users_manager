@@ -1,10 +1,9 @@
-<ul class="list-group">
-
  <table class="table table-striped">
    <tr>
  	<th>Nom(s)</th>
  	<th>Prenom(s)</th>
  	<th>Email</th>
+   <th>status</th>
  	<th>Nommer admin</th>
  	<th>Modifier</th>
  	<th>Supprimer</th>
@@ -13,8 +12,33 @@
    	<td>{{ user.lastName }}</td>
    	<td>{{ user.firstName }}</td>
    	<td>{{ user.email }}</td>
-   	<td><button class="btn btn-success">Nommer Admin</button></td>
-   	<td><button class="btn btn-success">Modifier</button></td>
-   	<td><button class="btn btn-success">Supprimer</button></td>
+      <td> 
+         <em style="color: green;" *ngIf="user.estAdmin">Admin</em>
+         <em style="color: indigo;" *ngIf="!user.estAdmin">Membre</em>
+      </td>
+   	<td>
+         <button class="btn" 
+                  *ngIf="user.isadmin && authservice.userauth.isadmin" 
+                  (click)="retireruser(user)">Demettre</button>
+         <button class="btn btn-primary" 
+                 *ngIf="!user.isadmin && authservice.userauth.isadmin" 
+                 (click)="nommeruser(user)">Nommer</button>
+      </td>
+   	<td><button class="btn btn-success" (click)="modif()">Modifier</button></td>
+   	<td> 
+         <button class="btn btn-danger" 
+                 *ngIf="authservice.userauth.isadmin && present" 
+                 (click)="open()">Supprimer</button>
+                  <span *ngIf="!present">
+                     <em>voulez vous vraiment supprimer?</em>
+                                    
+                     <button class="btn btn-success"  (click)="deleteuser(user.id)">YOui</button>
+                     <button class="btn btn-danger"  (click)="close()">Non</button>
+                  </span>
+      </td>
    </tr>
  </table>
+
+
+
+                        

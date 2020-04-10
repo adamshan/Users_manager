@@ -16,32 +16,21 @@ class UserController extends Controller
 
     }
 
-      public function getuser(){
+      public function getUtilisateur(){
         $user=user::orderby('id','desc')->get();
         return $user;
     }
 
-/*
-    public function upload(Request $request){
-
-        //dd($request->file('image')->getClientOriginalName());
-        
-        $filename=$request->file('image')->getClientOriginalName();
-        dd($filename);
-       
-    }
-*/
-
    //on recupere tout les utilisateurs simples
 
-    public function getlistuserbystatus($status){
+    public function getListUtilisateur($status){
         $user=user::listuserbystatus($status);
 
         return $user;
     }
 
-    	//adduser permet d'ajouter un utilisateur
-      public function adduser(Request $request){
+    	//ajoutUtilisateur permet d'ajouter un utilisateur
+      public function ajoutUtilisateur(Request $request){
        $data=request();
         
 
@@ -69,8 +58,8 @@ class UserController extends Controller
     }
 
 
-    //updateUser modifie un utilisateur
-    public function updateUser(){
+    //modifUtilisateur modifie un utilisateur
+    public function modifUtilisateur(){
         $data=request();
         $user=user::find($data->id);
 
@@ -99,9 +88,9 @@ class UserController extends Controller
     }
 	
 
-    //estUser permet de demettre un utilisateur de son status d'admin
+    //estUtilisateur permet de demettre un utilisateur de son status d'admin
     
-    public function estUser($id){
+    public function estUtilisateur($id){
 
         $user=user::find($id);
         $user->isadmin=false;
@@ -110,9 +99,9 @@ class UserController extends Controller
     }
 
 
-    //deleteUser supprime un utilisateur
+    //supprimeUtilisateur supprime un utilisateur
 
-    public function deleteUser(){
+    public function supprimeUtilisateur(){
        
         $id=request('id');
         user::deluser($id);

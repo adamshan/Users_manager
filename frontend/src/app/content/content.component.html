@@ -1,1 +1,21 @@
-<p>content works!</p>
+<app-menu></app-menu>
+<app-side></app-side>
+<div  class="col-sm-7 col-sm-offset-1">
+        
+</div>
+<div  class="col-sm-7 col-sm-offset-1">
+    <button class="btn" *ngIf="authservice.userauth.isadmin"  (click)="newuser()">Add New User</button> 
+
+</div>
+    
+
+    <div  class="col-sm-7 col-sm-offset-1" *ngFor="let user of pageOfItems">
+        
+        <app-oneuser  [user]="user">
+                
+        </app-oneuser>
+    </div>
+    
+    <div class="col-xs-12 col-sm-6 col-md-6">
+            <jw-pagination [items]="listuser" [pageSize]=3 (changePage)="onChangePage($event)"></jw-pagination>
+    </div>
