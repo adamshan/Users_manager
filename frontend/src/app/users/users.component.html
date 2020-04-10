@@ -1,0 +1,20 @@
+<ul class="list-group">
+
+ <table class="table table-striped">
+   <tr>
+ 	<th>Nom(s)</th>
+ 	<th>Prenom(s)</th>
+ 	<th>Email</th>
+ 	<th>Nommer admin</th>
+ 	<th>Modifier</th>
+ 	<th>Supprimer</th>
+   </tr>
+   <tr *ngFor="let user of users">
+   	<td>{{ user.lastName }}</td>
+   	<td>{{ user.firstName }}</td>
+   	<td>{{ user.email }}</td>
+   	<td><button class="btn btn-success">Nommer Admin</button></td>
+   	<td><button class="btn btn-success">Modifier</button></td>
+   	<td><button class="btn btn-success">Supprimer</button></td>
+   </tr>
+ </table>
